@@ -1,7 +1,18 @@
 import { type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
+import { createClient } from '@/utils/supabase/server'; 
 
 export async function middleware(request: NextRequest) {
+  const supabase = createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  // can i protect api routes with this?
+  const publicRoutes = ["/", "/login"];
+
+  if (!user && !publicRoutes.includes(request.nextUrl.pathname)) {
+    return Response.redirect(new URL("/login", request.url));
+  }
+  
+
   return await updateSession(request);
 }
 

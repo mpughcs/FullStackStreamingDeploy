@@ -23,9 +23,28 @@ export default function Login({
 
     if (error) {
       return redirect("/login?message=Could not authenticate user");
+    } else {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      const { data: userChannel, error: channelError } = 
+      await supabase
+        .from("Channels")
+        .select("*")
+        .eq("id", user?.id)
+        .single();
+      console.log(userChannel.display_name);
+
+      if (userChannel.display_name == null) {
+        return redirect("/onboarding");
+      } else {
+        return redirect("/mychannel");
+      }
     }
 
-    return redirect("/protected");
+    // here we can check if the user has finished creating their account and redirect them to either the protected page or the onboarding page
   };
 
   const signUp = async (formData: FormData) => {

@@ -4,6 +4,8 @@ import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/ConnectSupabaseSteps";
 import SignUpUserSteps from "@/components/tutorial/SignUpUserSteps";
 import Header from "@/components/Header";
+import Channels from "./channels/page";
+import Link from "next/link";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
@@ -17,22 +19,63 @@ export default async function Index() {
     }
   };
 
-  const isSupabaseConnected = canInitSupabaseClient();
+  // const isSupabaseConnected = canInitSupabaseClient();
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const { data: userChannel } = await supabase
+    .from("Channels")
+    .select("*")
+    .eq("id", user?.id)
+    .single();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-          <DeployButton />
-          {isSupabaseConnected && <AuthButton />}
+          <div className="flex items-end">
+            {/* <DeployButton /> */}
+            {userChannel && (
+              <h1 className="font-bold text-xl  ml-[45px]">
+                Hi, {userChannel.display_name}!
+              </h1>
+            )}
+          </div>
+          <div className="flex gap-5">
+            {user && (
+              <div>
+                <Link href={"/mychannel"}>
+                  <button className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
+                    Your Channel
+                  </button>
+                </Link>
+              </div>
+            )}
+            {supabase && <AuthButton />}
+          </div>
         </div>
       </nav>
 
-      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
+      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3 w-[100%]">
+        <div className="  h-[100px]">
+          <div>
+            <span className="flex gap-10">
+              <h1 className="font-bold text-xl mb-4 ml-[45px]">channel</h1>
+              <h1 className="font-bold text-xl mb-4 ml-[175px]">
+                stream status
+              </h1>
+            </span>
+
+            <hr className="bg-green-200" />
+            <Channels />
+          </div>
+        </div>
+        <div className="h-full"></div>
+
         <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+          {/* <h2 className="font-bold text-4xl mb-4">Next steps</h2> */}
+          {/* {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />} */}
         </main>
       </div>
 
