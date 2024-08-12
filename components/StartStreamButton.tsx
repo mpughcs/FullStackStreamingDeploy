@@ -56,15 +56,19 @@ export default function StartStreamButton() {
     try {
       if (user) {
         if (isStreaming) {
-          // Stop streaming: delete the active stream
-          const { error: deleteError } = await supabase
-            .from("streams")
-            .delete()
-            .eq("id", streamId);
-
-          if (deleteError) throw deleteError;
-
-          setStreamId(null); // Clear the stored stream ID
+          if (streamId) {
+            // Stop streaming: delete the active stream
+            const { error: deleteError } = await supabase
+              .from("streams")
+              .delete()
+              .eq("id", streamId);
+  
+            if (deleteError) throw deleteError;
+  
+            setStreamId(null); // Clear the stored stream ID
+          } else {
+            throw new Error("Invalid stream ID");
+          }
         } else {
           // Start streaming: create a new stream
           const { data, error } = await supabase.from("streams").insert([
@@ -72,24 +76,27 @@ export default function StartStreamButton() {
               streamer_id: user.id,
             },
           ]).select();
-
+  
           if (error) throw error;
           setStreamId(data[0].id); // Store the ID of the new stream
         }
-
+  
         const newStreamingStatus = !isStreaming; // Toggle the streaming status
         const { error: updateError } = await supabase
           .from("Channels")
           .update({ is_streaming: newStreamingStatus })
           .eq("id", user.id);
         if (updateError) throw updateError;
-
+  
         setIsStreaming(newStreamingStatus); // Update the local state to reflect the change
+      } else {
+        throw new Error("User is not authenticated");
       }
     } catch (error: any) {
       setError(error.message);
     }
   };
+  
 
   return (
     <form onSubmit={(e) => {e.preventDefault(); startStreamHandler();}}>

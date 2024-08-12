@@ -5,6 +5,8 @@ import Stream from "@/components/Stream";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import StartStreamButton from "@/components/StartStreamButton";
+import { redirect } from "next/dist/server/api-utils";
+import router from "next/router";
 
 export default function MyChannel() {
   const [isStreaming, setIsStreaming] = useState(false);
@@ -18,7 +20,7 @@ export default function MyChannel() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
+      if(!user) return router.push("/login");
       if (user) {
         const { data: channelData } = await supabase
           .from("Channels")

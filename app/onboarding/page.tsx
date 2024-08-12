@@ -5,17 +5,19 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "../login/submit-button";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { kMaxLength } from "buffer";
 
 export default function Onboarding() {
   const router = useRouter();
   const [displayName, setDisplayName] = useState("");
+  const [emailNotifications, setEmailNotifications] = useState(false);
 
   function continueHandler() {
     event?.preventDefault(); // Prevent default form submission
     // update-username()
     updateDisplayName();
+    updateEmailNotifications();
     router.push("/mychannel");
   }
   const updateDisplayName = async () => {
@@ -26,10 +28,22 @@ export default function Onboarding() {
       },
       body: JSON.stringify({ displayName }),
     });
-    if (response.ok) {
-      router.push("/mychannel");
-    }
+    
   };
+  const updateEmailNotifications = async () => {
+    const response = await fetch("/api/update-email-notifications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ emailNotifications }),
+    });
+    
+  }
+
+  useEffect(() => {
+    console.log("emailNotifications", emailNotifications);
+  }, [emailNotifications]);
 
   useEffect(() => {
     console.log("displayName", displayName);
@@ -71,13 +85,15 @@ export default function Onboarding() {
             Notification Preferences
           </label>
           <label className="label cursor-pointer">
-            <span className="label-text">Remember me</span>
-            <input type="checkbox" defaultChecked className="checkbox" />
+            <span className="label-text">Receive Email Notifications?</span>
+            <input
+              type="checkbox"
+              className="toggle toggle-primary"
+              checked={emailNotifications}
+              onChange={(e) => setEmailNotifications(e.target.checked)}
+            />
           </label>
-          <label className="label cursor-pointer">
-            <span className="label-text">Remember me</span>
-            <input type="checkbox" defaultChecked className="checkbox" />
-          </label>
+          
         </div>
         <button className="btn btn-primary" onClick={continueHandler}>
           Continue
