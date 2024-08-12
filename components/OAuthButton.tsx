@@ -1,8 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/router"; // Import useRouter
-
+import { useRouter } from "next/navigation";
 // Extend the global Window interface
 declare global {
   interface Window {
@@ -12,8 +11,7 @@ declare global {
 
 export default function OAuthButton() {
   const supabase = createClient();
-  const router = useRouter(); // Initialize the useRouter hook
-
+  const router = useRouter();
 
   useEffect(() => {
     window.handleSignInWithGoogle = async function (response) {
@@ -24,29 +22,33 @@ export default function OAuthButton() {
       if (error) {
         console.error("Error signing in with Google:", error);
       } else {
-        const {
-          data: { user },
-          error,
-        } = await supabase.auth.getUser();
-  
-        const { data: userChannel, error: channelError } = 
-        await supabase
+        const { data: user, error: userError } = await supabase.auth.getUser();
+
+        if (userError) {
+          console.error("Error retrieving user data:", userError);
+          return;
+        }
+
+        const { data: userChannel, error: channelError } = await supabase
           .from("Channels")
           .select("*")
           .eq("id", user?.id)
           .single();
-        console.log(userChannel.display_name);
-  
+
         if (channelError) {
-          console.error("Error fetching user channel:", channelError);
-        } else if (userChannel?.display_name == null) {
-          router.push("/onboarding"); // Use router.push for client-side navigation
-        } else {
-          router.push("/mychannel"); // Use router.push for client-side navigation
+          console.error("Error retrieving user channel data:", channelError);
+          return;
         }
+
+        if (userChannel.display_name == null) {
+          router.push("/onboarding");
+        } else {
+          router.push("/mychannel");
+        }
+        
       }
-    }
-    
+    };
+
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
     script.async = true;
