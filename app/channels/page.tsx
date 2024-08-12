@@ -17,7 +17,7 @@ export default function Channels() {
   const supabase = createClient();
 
   //state to store channels
-  const [channels, setChannels] = useState<any[]>([]);
+  const [channels, setChannels] = useState<any[] | undefined>([]);
 
   useEffect(() => {
     // fetch channels
