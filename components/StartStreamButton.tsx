@@ -51,6 +51,8 @@ export default function StartStreamButton() {
   }, [supabase]);
 
   const startStreamHandler = async () => {
+    console.log("startStreamHandler");
+    console.log("user", user);
     try {
       if (user) {
         if (isStreaming) {

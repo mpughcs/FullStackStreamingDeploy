@@ -6,16 +6,7 @@ import Channels from "./channels/page";
 import Link from "next/link";
 
 export default async function Index() {
-  const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
-    try {
-      createClient();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
+  
 
   // const isSupabaseConnected = canInitSupabaseClient();
   const supabase = createClient();
@@ -65,6 +56,7 @@ export default async function Index() {
             </span>
 
             <hr className="bg-green-200" />
+            
             <Channels />
           </div>
         </div>

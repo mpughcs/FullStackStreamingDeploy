@@ -3,15 +3,15 @@ import { createClient } from "@/utils/supabase/client";
 
 export default function OAuthButton() {
   const supabase = createClient();
+  
 
   const handleOAuthSignIn = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        queryParams: {
-          access_type: "offline",
-          prompt: "consent",
-        },
+
+        redirectTo: 'https://full-stack-streaming-deploy-o23f.vercel.app/auth/callback',
+
       },
     });
 
