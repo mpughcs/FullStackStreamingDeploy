@@ -4,12 +4,13 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import OAuthButton from "@/components/OAuthButton";
-
+// Login page
 export default function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  // Sign in with email and password
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -37,7 +38,7 @@ export default function Login({
         .eq("id", user?.id)
         .single();
       console.log(userChannel.display_name);
-
+      // If the user has not set up their channel, redirect to onboarding
       if (userChannel.display_name == null) {
         return redirect("/onboarding");
       } else {
@@ -45,7 +46,6 @@ export default function Login({
       }
     }
 
-    // here we can check if the user has finished creating their account and redirect them to either the protected page or the onboarding page
   };
 
   

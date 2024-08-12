@@ -7,6 +7,7 @@ interface IframeComponentProps {
   title: string;
   isStreaming: boolean; // Add a prop to control visibility
 }
+// Stream component
 
 const Stream: React.FC<IframeComponentProps> = ({
   src,

@@ -1,10 +1,10 @@
-import DeployButton from "../components/DeployButton";
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 
 import Channels from "./channels/page";
 import Link from "next/link";
 
+// The main page of the app which displays the list of channels
 export default async function Index() {
   
 

@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
+// Start stream button component
 export default function StartStreamButton() {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
@@ -50,9 +51,11 @@ export default function StartStreamButton() {
     fetchData();
   }, [supabase]);
 
+  // toggleable function to start and stop the stream
+  // this function will be called when the user clicks the start/stop stream button
+  // use the supabase client to interact with the database
   const startStreamHandler = async () => {
-    console.log("startStreamHandler");
-    console.log("user", user);
+   
     try {
       if (user) {
         if (isStreaming) {

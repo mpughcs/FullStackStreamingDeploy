@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server'; // Adjust this import path according to your setup
 
+
+// POST /api/messages
+// Required fields: channel_id, display_name, message
+// Optional fields: none
+// Returns: JSON object with message and data or error
 export async function POST(req: Request) {
   const supabase = createClient();
   const body = await req.json();

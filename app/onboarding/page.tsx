@@ -1,24 +1,23 @@
 "use client";
 import Link from "next/link";
-import { headers } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { SubmitButton } from "../login/submit-button";
+
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
-import { kMaxLength } from "buffer";
 
+// Onboarding page
 export default function Onboarding() {
   const router = useRouter();
   const [displayName, setDisplayName] = useState("");
   const [emailNotifications, setEmailNotifications] = useState(false);
 
+  // Handle the continue button click event
   const continueHandler = async (e: any) => {
     e.preventDefault();
     await updateDisplayName();
     await updateEmailNotifications();
     router.push("/mychannel");
   };
+  // Update the user's display name
   const updateDisplayName = async () => {
     const response = await fetch("/api/update-username", {
       method: "POST",
@@ -27,9 +26,8 @@ export default function Onboarding() {
       },
       body: JSON.stringify({ displayName }),
     });
-
-    
   };
+  // Update the user's email notification preferences
   const updateEmailNotifications = async () => {
     const response = await fetch("/api/update-email-notifications", {
       method: "POST",
@@ -38,22 +36,13 @@ export default function Onboarding() {
       },
       body: JSON.stringify({ emailNotifications }),
     });
-    
-  }
-
-  useEffect(() => {
-    console.log("emailNotifications", emailNotifications);
-  }, [emailNotifications]);
-
-  useEffect(() => {
-    console.log("displayName", displayName);
-  }, [displayName]);
+  };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+    <div className="flex flex-col flex-1 justify-center gap-2 px-8 w-full sm:max-w-md">
       <Link
         href="/"
-        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
+        className="top-8 left-8 absolute flex items-center bg-btn-background hover:bg-btn-background-hover px-4 py-2 rounded-md text-foreground text-sm no-underline group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -65,17 +54,17 @@ export default function Onboarding() {
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
+          className="mr-2 w-4 h-4 transition-transform group-hover:-translate-x-1"
         >
           <polyline points="15 18 9 12 15 6" />
         </svg>{" "}
         Back
       </Link>
 
-      <form className="flex-1 flex flex-col w-full justify-center gap-5 text-foreground">
+      <form className="flex flex-col flex-1 justify-center gap-5 w-full text-foreground">
         <label className="text-md">Display Name</label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
+          className="bg-inherit mb-6 px-4 py-2 border rounded-md"
           placeholder="john_doe"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
@@ -84,7 +73,7 @@ export default function Onboarding() {
           <label className="text-md" htmlFor="password">
             Notification Preferences
           </label>
-          <label className="label cursor-pointer">
+          <label className="cursor-pointer label">
             <span className="label-text">Receive Email Notifications?</span>
             <input
               type="checkbox"
@@ -93,7 +82,6 @@ export default function Onboarding() {
               onChange={(e) => setEmailNotifications(e.target.checked)}
             />
           </label>
-          
         </div>
         <button className="btn btn-primary" onClick={continueHandler}>
           Continue

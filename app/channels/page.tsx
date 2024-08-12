@@ -11,12 +11,10 @@ import {
 } from "react";
 
 import { useEffect, useState } from "react";
-
+// this is the default Channels component that will be rendered when a user navigates to the /channels page in the app
 export default function Channels() {
-  //initialize supabase client
   const supabase = createClient();
 
-  //state to store channels
   const [channels, setChannels] = useState<any[] | undefined>([]);
 
   useEffect(() => {

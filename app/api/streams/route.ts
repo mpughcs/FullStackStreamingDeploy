@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
+// POST /api/streams
+// Required fields: streamer_id
+// Optional fields: none
+// Returns: JSON object with message and data or error
+
 export async function POST(req: Request) {
     const supabase = createClient();
     const body = await req.json();

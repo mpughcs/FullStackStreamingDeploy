@@ -1,5 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 
+// Update the user's display name
+// POST /api/update-username
+// req.body: { displayName: string }
+// res: { success: true }
+// or { error: string }
 export async function POST(req) {
   const { displayName } = await req.json();
 

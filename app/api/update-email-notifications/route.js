@@ -1,5 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 
+
+// Update the user's email notifications preferences
+// POST /api/update-email-notifications
+// req.body: { emailNotifications: boolean }
+// res: { success: true }
+// or { error: string }
+
 export async function POST(req) {
   const { emailNotifications } = await req.json();
   console.log("preferences", emailNotifications);

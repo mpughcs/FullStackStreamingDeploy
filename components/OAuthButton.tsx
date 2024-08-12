@@ -9,6 +9,8 @@ declare global {
   }
 }
 
+// OAuthButton component, which will be used to display the Google OAuth button
+// This component will be used to sign in with Google
 export default function OAuthButton() {
   const supabase = createClient();
   const router = useRouter();

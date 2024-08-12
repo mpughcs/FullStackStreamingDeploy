@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import Stream from "@/components/Stream";
-import { cp } from "fs";
 
+// this is the ChannelPage component that will be rendered when a user navigates to a channel page in the app
 export default function ChannelPage({ params }: { params: { id: string } }) {
   const [channel, setChannel] = useState(null as any);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -20,6 +19,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
 
   useEffect(() => {
+    // fetch the channel data from the database
     const fetchChannelData = async () => {
       const { data: channelData, error } = await supabase
         .from("Channels")
@@ -37,7 +37,6 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
       }
 
       const { data: currentUserData } = await supabase.from("Channels").select("*").eq("id", user.id).single();
-      // console.log(currentUserData);
       setCurrentUser(currentUserData);
 
       const { data: followData } = await supabase
@@ -67,7 +66,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
       console.log("Channel update received:", payload);
       setIsStreaming(payload.new.is_streaming);
     };
-
+    // subscribe to changes in the channel data
     const channelSubscription = supabase
       .channel(`channel-${params.id}`)
       .on(
@@ -81,7 +80,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
         handleChannelUpdate
       )
       .subscribe();
-
+      // subscribe to changes in the chat messages
     const chatSubscription = supabase
       .channel(`chat-${params.id}`)
       .on(
@@ -100,7 +99,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
       chatSubscription.unsubscribe();
     };
   }, [params.id]);
-
+  // function to send a message to the chat
   const sendMessage = async (message: any) => {
     const response = await fetch("/api/messages", {
       method: "POST",
@@ -121,6 +120,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
       console.error("Error sending message:", result.message);
     }
   };
+  // function to follow a channel
   const followChannel = async () => {
     console.log(currentUser.id, channel.id);
     const response = await fetch("/api/follows", {
@@ -142,6 +142,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
     }
     setIsFollowingUi(true);
   };
+  // function to unfollow a channel
   const unfollowChannel = async () => {
     console.log(currentUser.id, channel.id);
     const response = await fetch("/api/follows", {
@@ -163,7 +164,6 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
     }
     setIsFollowingUi(false);
   }
-  console.log(channel);
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">

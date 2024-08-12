@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
-import { createClient } from '@/utils/supabase/server'; // Adjust this import path according to your setup
+import { createClient } from '@/utils/supabase/server'; 
 
+
+// POST /api/follows
+// Required fields: follower_id, followed_id
+// Optional fields: none
+// Returns: JSON object with message and data
 export async function POST(req: Request) {
   const supabase = createClient();
   const body = await req.json();
@@ -25,6 +30,11 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ message: 'Follower added successfully', data }, { status: 200 });
 }
+
+// DELETE /api/follows
+// Required fields: follower_id, followed_id
+// Optional fields: none
+// Returns: JSON object with message and data or error
 
 export async function DELETE(req: Request) {
   const supabase = createClient();

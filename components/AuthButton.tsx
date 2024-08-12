@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+// AuthButton component, which will be used to display the login button or the logout button
 export default async function AuthButton() {
   const supabase = createClient();
 
@@ -26,7 +27,6 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      {/* Hey, {userChannel.display_name}! */}
       <form action={signOut}>
         <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
           Logout
