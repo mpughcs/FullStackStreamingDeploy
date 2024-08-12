@@ -8,6 +8,7 @@ import StartStreamButton from "@/components/StartStreamButton";
 
 export default function MyChannel() {
   const [isStreaming, setIsStreaming] = useState(false);
+  const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
     const supabase = createClient();
@@ -25,6 +26,7 @@ export default function MyChannel() {
           .eq("id", user.id)
           .single();
         setIsStreaming(channelData.is_streaming);
+        setDisplayName(channelData.display_name);
         
       }
     };
@@ -69,7 +71,7 @@ export default function MyChannel() {
       <main className="flex-1 flex flex-col gap-6 max-w-4xl px-3 w-[100%]">
         <div className="flex justify-between">
           <h1 className="font-bold text-4xl mb-4">
-            Your Channel
+            {displayName ? displayName : "Loading..."}
           </h1>
           <StartStreamButton />
         </div>

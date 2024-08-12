@@ -48,6 +48,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
         .single();
 
       setIsFollowing(!!followData); // Set to true if followData exists
+      setIsFollowingUi(!!followData);
 
       if (error) {
         console.error("Error loading channel:", error.message);
