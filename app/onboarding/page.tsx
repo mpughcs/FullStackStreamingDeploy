@@ -13,13 +13,12 @@ export default function Onboarding() {
   const [displayName, setDisplayName] = useState("");
   const [emailNotifications, setEmailNotifications] = useState(false);
 
-  function continueHandler() {
-    event?.preventDefault(); // Prevent default form submission
-    // update-username()
-    updateDisplayName();
-    updateEmailNotifications();
+  const continueHandler = async (e: any) => {
+    e.preventDefault();
+    await updateDisplayName();
+    await updateEmailNotifications();
     router.push("/mychannel");
-  }
+  };
   const updateDisplayName = async () => {
     const response = await fetch("/api/update-username", {
       method: "POST",
@@ -28,6 +27,7 @@ export default function Onboarding() {
       },
       body: JSON.stringify({ displayName }),
     });
+
     
   };
   const updateEmailNotifications = async () => {
