@@ -86,7 +86,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "chat_messages" },
-        (payload) => {
+        (payload: { new: { [key: string]: any; }; }) => {
           console.log("New chat message received:", payload.new);
 
           setChatMessages((prev) => [...prev, payload.new]);
@@ -191,7 +191,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
         <div className="flex gap-5 w-full ju">
           <Stream
             src="https://www.youtube.com/embed/jfKfPfyJRdk"
-            // title={`${currentUser?.display_name}'s stream`}
+            title={`${currentUser?.display_name}'s stream`}
             isStreaming={isStreaming}
           />
           <div className="flex-1 flex flex-col gap-2">
@@ -209,10 +209,10 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
               type="text"
               placeholder="Type a message..."
               className="border p-2 rounded-md"
-              onKeyDown={(e) => {
+              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                 if (e.key === "Enter") {
-                  sendMessage(e.target.value);
-                  e.target.value = "";
+                  sendMessage(e.currentTarget.value);
+                  e.currentTarget.value = "";
                 }
               }}
             />

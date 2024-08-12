@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import classNames from "classnames"; 
+import { Key, ReactElement, JSXElementConstructor, ReactNode, PromiseLikeOfReactNode } from "react";
 
 export default async function Channels() {
   const supabase = createClient();
@@ -17,11 +18,11 @@ export default async function Channels() {
   // if (error) throw error;
 
   // Filter out the logged-in user's own channel
-  const filteredChannels = channels?.filter(channel => channel.id !== user?.id);
+  const filteredChannels = channels?.filter((channel: { id: any; }) => channel.id !== user?.id);
 
   return (
     <div className="channel-list">
-      {filteredChannels?.map((channel) => (
+      {filteredChannels?.map((channel: { id: Key | null | undefined; display_name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | PromiseLikeOfReactNode | null | undefined; is_streaming: any; }) => (
         <Link href={`/channels/${channel.id}`} key={channel.id} passHref>
           <div
             className={classNames(
