@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import OAuthButton from "@/components/OAuthButton";
 
 export default function Login({
   searchParams,
@@ -46,6 +47,8 @@ export default function Login({
 
     // here we can check if the user has finished creating their account and redirect them to either the protected page or the onboarding page
   };
+
+  
 
   const signUp = async (formData: FormData) => {
     "use server";
@@ -113,6 +116,7 @@ export default function Login({
           placeholder="••••••••"
           required
         />
+        <OAuthButton />
         <SubmitButton
           formAction={signIn}
           className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"

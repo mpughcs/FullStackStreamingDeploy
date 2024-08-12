@@ -13,6 +13,7 @@ export default function MyChannel() {
   useEffect(() => {
     const supabase = createClient();
 
+
     const fetchChannelData = async () => {
       const {
         data: { user },
@@ -25,10 +26,13 @@ export default function MyChannel() {
           .eq("id", user.id)
           .single();
         setIsStreaming(channelData.is_streaming);
-        setUserChannel(channelData);}
+        setUserChannel(channelData);
+        
+      }
     };
 
     fetchChannelData();
+    
 
     const handleChannelUpdate = (payload) => {
       console.log("Channel update received:", payload);

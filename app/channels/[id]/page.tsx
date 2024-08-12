@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Stream from "@/components/Stream";
+import { cp } from "fs";
 
 export default function ChannelPage({ params }: { params: { id: string } }) {
   const [channel, setChannel] = useState(null as any);
@@ -35,7 +36,9 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
         return;
       }
 
-      setCurrentUser(user);
+      const { data: currentUserData } = await supabase.from("Channels").select("*").eq("id", user.id).single();
+      // console.log(currentUserData);
+      setCurrentUser(currentUserData);
 
       const { data: followData } = await supabase
         .from("follows")
@@ -159,7 +162,7 @@ export default function ChannelPage({ params }: { params: { id: string } }) {
     }
     setIsFollowingUi(false);
   }
-
+  console.log(channel);
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">

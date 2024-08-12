@@ -10,9 +10,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
   }
   // console.log('body', body);
+  // get follower email from follower_id
+  const { data: followerData, error: followerError } = await supabase.from('Channels').select('email').eq('id', follower_id).single();
 
   const { data, error } = await supabase.from('follows').insert([
     {
+      email: followerData.email,
       follower_id: follower_id,
       followed_id: followed_id,
     },
