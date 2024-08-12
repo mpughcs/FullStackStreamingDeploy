@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/router"; // Import useRouter
 
 // Extend the global Window interface
 declare global {
@@ -12,6 +12,8 @@ declare global {
 
 export default function OAuthButton() {
   const supabase = createClient();
+  const router = useRouter(); // Initialize the useRouter hook
+
 
   useEffect(() => {
     window.handleSignInWithGoogle = async function (response) {
@@ -35,10 +37,12 @@ export default function OAuthButton() {
           .single();
         console.log(userChannel.display_name);
   
-        if (userChannel.display_name == null) {
-          return redirect("/onboarding");
+        if (channelError) {
+          console.error("Error fetching user channel:", channelError);
+        } else if (userChannel?.display_name == null) {
+          router.push("/onboarding"); // Use router.push for client-side navigation
         } else {
-          return redirect("/mychannel");
+          router.push("/mychannel"); // Use router.push for client-side navigation
         }
       }
     }
