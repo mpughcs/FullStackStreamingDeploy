@@ -39,14 +39,13 @@ export default function OAuthButton() {
     <div>
       <div
         id="g_id_onload"
-        data-client_id="<client ID>"
+        data-client_id="346636204935-5jfgkh4fka70u8heocvavgjmofa1hbis.apps.googleusercontent.com"
         data-context="signin"
         data-ux_mode="popup"
         data-callback="handleSignInWithGoogle"
         data-nonce=""
         data-auto_select="true"
         data-itp_support="true"
-        // Disable FedCM usage
         data-use_fedcm_for_prompt="false"
       ></div>
 
