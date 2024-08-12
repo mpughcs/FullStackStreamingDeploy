@@ -55,7 +55,7 @@ export default function OAuthButton() {
     return () => {
       document.body.removeChild(script);
     };
-  }, [supabase]);
+  }, [supabase, router]);
 
   return (
     <div>
