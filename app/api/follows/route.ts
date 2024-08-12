@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
   const { data, error } = await supabase.from('follows').insert([
     {
-      email: followerData.email,
+      email: followerData?.email,
       follower_id: follower_id,
       followed_id: followed_id,
     },
