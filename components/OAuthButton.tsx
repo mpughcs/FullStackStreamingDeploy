@@ -22,7 +22,7 @@ export default function OAuthButton() {
       if (error) {
         console.error("Error signing in with Google:", error);
       } else {
-        const { data: user, error: userError } = await supabase.auth.getUser();
+        const { data: {user}, error: userError } = await supabase.auth.getUser();
 
         if (userError) {
           console.error("Error retrieving user data:", userError);
