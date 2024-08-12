@@ -2,11 +2,17 @@
 import { useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
+declare global {
+  interface Window {
+    handleSignInWithGoogle: (response: any) => Promise<void>;
+  }
+}
+
 export default function OAuthButton() {
   const supabase = createClient();
 
   // Define the global callback function
-   const handleSignInWithGoogle = async function (response: { credential: any; }) {
+    window.handleSignInWithGoogle = async function (response: { credential: any; }) {
     const { data, error } = await supabase.auth.signInWithIdToken({
       provider: "google",
       token: response.credential,
