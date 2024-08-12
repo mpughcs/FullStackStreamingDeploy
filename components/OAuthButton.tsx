@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
 
 // Extend the global Window interface
 declare global {
@@ -21,10 +22,27 @@ export default function OAuthButton() {
       if (error) {
         console.error("Error signing in with Google:", error);
       } else {
-        console.log("Signed in successfully:", data);
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.getUser();
+  
+        const { data: userChannel, error: channelError } = 
+        await supabase
+          .from("Channels")
+          .select("*")
+          .eq("id", user?.id)
+          .single();
+        console.log(userChannel.display_name);
+  
+        if (userChannel.display_name == null) {
+          return redirect("/onboarding");
+        } else {
+          return redirect("/mychannel");
+        }
       }
-    };
-
+    }
+    
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
     script.async = true;
