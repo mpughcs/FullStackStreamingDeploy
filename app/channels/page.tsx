@@ -34,7 +34,7 @@ export default async function Channels() {
               src={
                 "https://img.freepik.com/free-photo/funny-monkey-with-glasses-studio_23-2150844100.jpg"
               }
-              alt={channel.display_name}
+              alt={channel?.display_name?.toString() ?? ""}
               className="rounded-full w-14 h-14 object-cover"
             />
             <div className="flex self-end pb-1 justify-between w-[300px]">

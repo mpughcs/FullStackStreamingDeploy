@@ -1,3 +1,5 @@
+// @ts-ignore
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const RESEND_API_KEY = "re_QQNdY1q6_7ryFYTZy6QJ3sUDwjzXuvgCU";
@@ -39,7 +41,7 @@ const handler = async (request: Request): Promise<Response> => {
             },
         });
     } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
+        return new Response(JSON.stringify({ error: (error as Error).message }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',

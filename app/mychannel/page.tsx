@@ -8,7 +8,6 @@ import StartStreamButton from "@/components/StartStreamButton";
 
 export default function MyChannel() {
   const [isStreaming, setIsStreaming] = useState(false);
-  const [userChannel, setUserChannel] = useState("Your Channel");
 
   useEffect(() => {
     const supabase = createClient();
@@ -26,7 +25,6 @@ export default function MyChannel() {
           .eq("id", user.id)
           .single();
         setIsStreaming(channelData.is_streaming);
-        setUserChannel(channelData);
         
       }
     };
@@ -34,7 +32,7 @@ export default function MyChannel() {
     fetchChannelData();
     
 
-    const handleChannelUpdate = (payload) => {
+    const handleChannelUpdate = (payload: { new: { is_streaming: boolean | ((prevState: boolean) => boolean); }; }) => {
       console.log("Channel update received:", payload);
       setIsStreaming(payload.new.is_streaming);
     };
@@ -71,7 +69,7 @@ export default function MyChannel() {
       <main className="flex-1 flex flex-col gap-6 max-w-4xl px-3 w-[100%]">
         <div className="flex justify-between">
           <h1 className="font-bold text-4xl mb-4">
-            {userChannel.display_name}
+            Your Channel
           </h1>
           <StartStreamButton />
         </div>

@@ -13,7 +13,7 @@ export default function Onboarding() {
   const [displayName, setDisplayName] = useState("");
 
   function continueHandler() {
-    event.preventDefault(); // Prevent default form submission
+    event?.preventDefault(); // Prevent default form submission
     // update-username()
     updateDisplayName();
     router.push("/mychannel");
