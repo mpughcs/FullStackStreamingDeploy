@@ -13,6 +13,7 @@ deployed [here](https://full-stack-streaming-deploy-o23f.vercel.app/)
   - Start and stop live streams (embed YouTube video as a placeholder).
   - Follow other channels and receive notifications (email) when they go live.
   - Join live chats on streaming channels.
+
 ## Tech Stack
 - **Frontend**:
   - [Next.js](https://nextjs.org/): React framework for server-side rendering and static site generation.

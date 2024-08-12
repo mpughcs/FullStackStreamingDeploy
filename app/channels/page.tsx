@@ -63,7 +63,7 @@ export default function Channels() {
 
   return (
     // display channels
-    <div className="channel-list">
+    <div className="channel-list h-max">
       {/* map through channels */}
       {channels?.map(
         (channel: {
