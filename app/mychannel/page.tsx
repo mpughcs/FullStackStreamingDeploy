@@ -8,6 +8,7 @@ import StartStreamButton from "@/components/StartStreamButton";
 import { redirect } from "next/dist/server/api-utils";
 import router from "next/router";
 
+// Logged-in user's channel page
 export default function MyChannel() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [displayName, setDisplayName] = useState("");
@@ -35,12 +36,12 @@ export default function MyChannel() {
 
     fetchChannelData();
     
-
+    // Subscribe to channel updates
     const handleChannelUpdate = (payload: { new: { is_streaming: boolean | ((prevState: boolean) => boolean); }; }) => {
       console.log("Channel update received:", payload);
       setIsStreaming(payload.new.is_streaming);
     };
-
+    // Subscribe to channel updates
     const channelSubscription = supabase
       .channel("Channels")
       .on(

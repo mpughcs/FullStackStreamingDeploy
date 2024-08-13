@@ -49,6 +49,8 @@ export default function Login({
   };
 
   
+// Sign up with email and password
+// This function is called when the user submits the sign up form
 
   const signUp = async (formData: FormData) => {
     "use server";
